@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  
+  <title>Skat calculator 2.0</title>
+</head>
+<header> 
+ 
+<button class="btnCalcular" id="langES">ES</button>
+<button class="btnCalcular" id="langEN">EN</button>
+
+</header>
+
+<body>
+    
+        
+  <h1>Skat Calculator</h1>
+
+<div class="container"> 
+  <button class="btnCalcular" id="salaryEstimate">  Estimación de Salario </button>
+    <button class="btnCalcular" id="requiredHours"> Horas Requeridas</button>
+</div>
+ 
+<p id="modeDescription">
+Calcula el salario mensual despues de impuestos o cuantas horas necesitas trabajar para alcanzar un ingreso objetivo.
+</p>
+    
+<div class="container">
+    <aside class="sidebar">
+
+      <form id="formulario" method="POST"  name="formulario">
+        <label for="horas" id="horas"> Monto por Hora  </label>
+        <input type="number" name="horas"  require/>
+        <label for="horasTrabajadas" id="horasTrabajadas"> Horas Trabajadas </label>
+        <input type="number" name="horasTrabajadas"  require/>
+        <label for="fradrag">Fradrag:</label>
+        <input type="number" name="fradrag" require/>
+
+
+        <label>Tax Card
+        <div id="seleccionar">
+        <input type="radio" name="opcion" value="conFradrag" id="taxA"> 
+        <label for="taxA" id="labelTaxA">Primaria A</label>
+        <input type="radio" name="opcion" value="sinFradrag" id="taxB"> 
+        <label for="taxB" id="labelTaxB">Secundaria B</label>
+         </div>   
+        </label>
+        <input type="submit" value="CALCULATE" class="btnCalcular" id="calcular">
+
+        </form>
+    </aside>
+</div>
+
+        <div id="resultados">
+        </div>
+        
+        
+
+        <script src="main.js"></script>
+
+        <footer class="footer">
+  Skat Calculator · Majo Giannaccini - 2026
+
+  <small id="note">
+  Nota: los resultados son una estimación basada en un modelo simplificado, dan una idea general del ingreso neto en Dinamarca. Puede variar según situación personal, deducciones y reglas fiscales reales.
+</small>
+
+
+</footer>
+</body>
+</html>
