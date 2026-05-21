@@ -136,124 +136,185 @@ const ferie = 0.125;
 
 //funciones para calcular  horas requeridas (a implementar)
 
-        function calculateGeneral(horas, horasTrabajadas, fradrag, tipo){
+function calculateGeneral(horas, horasTrabajadas, fradrag, tipo){
 
         let bruto= horas * horasTrabajadas;
+        console.log("Bruto: " + bruto);
         let afterAM = bruto * (1 - am);
+        console.log("After AM: " + afterAM);
         let neto;
         let final;
             
         if(tipo === "conFradrag"){ 
-            
+         
+   
         let taxable = afterAM - fradrag;
+        console.log("Taxable: " + taxable);
     
-        if (taxable < 0) taxable = 0;
+        if (taxable < 0) {
+            final = afterAM;
+            return { final, afterAM };
+            }else {
             neto = taxable * (1 - tax);
+            console.log("Neto: " + neto);
             final= neto + (fradrag*(1 - am));
-        
-        } else {
+            
+    
+        }
+        }else {
          final = afterAM * (1 - tax);
         }
+    
         return { final, afterAM };
 
-    }
+        }
 
 function calculateVacationPay(afterAM) {
-            let feriepenge = (afterAM *(1-tax)) * ferie;
-            return feriepenge;
+         let feriepenge = (afterAM *(1-tax)) * ferie;
+          return feriepenge;
+    }
 
-}
-function calculateHours() {
-    event.preventDefault();
- document.querySelector("#resultados").innerHTML = "";
+function calculateHours(event) {
 
-  console.log("Calculating required hours...");
-}
+        event.preventDefault();
 
+        document.querySelector("#resultados").innerHTML = "";
 
+        let data = new FormData(form);
+
+        let horas = Number(data.get('horas'));
+        let ingresosDeseados = Number(data.get('horasTrabajadas'));
+        let fradrag = Number(data.get('fradrag'));
+        let tipo = data.get("opcion");
+        console.log("fradrag:", data.get("fradrag"));
+        console.log("opcion:", data.get("opcion"));
+
+        if (!validate(horas, ingresosDeseados, fradrag, tipo)) return;
+
+        const horasTrabajadas = calculateAmountHours(horas, ingresosDeseados, fradrag);
+
+        const resultados = document.querySelector("#resultados");
+
+        resultados.innerHTML = `
+            <div class="resultado-card">
+
+            <p>
+                Estimated hours needed /necesitas trabajar las siguientes horas:
+                <strong>${horasTrabajadas.toFixed(2)}</strong>
+            </p>
+
+            <button id="btnBorrar">CLEAR</button>
+
+            </div>
+        `;
+
+        form.reset();
+
+        document.querySelector("#btnBorrar")
+            .addEventListener("click", limpiarCampos);
+        }
+                
+
+    function calculateAmountHours(horas, ingresosDeseados, fradrag) {
+
+            const netFactor = 0.590; // Factor para convertir bruto a neto considerando AM y tax
+            const fradragFactor = 0.28;
+
+            let adjustedTarget =ingresosDeseados - fradrag * fradragFactor;
+        console.log("Adjusted Target: " + adjustedTarget);
+            if (adjustedTarget < 0) return 0;
+
+            let horasTrabajadas = adjustedTarget / (horas * netFactor);
+        console.log("Horas Trabajadas: " + horasTrabajadas);
+            return horasTrabajadas;
+            
+            }
+  
 
 function calculateSalary(event) {
-  event.preventDefault();
+        event.preventDefault();
 
-  document.querySelector("#resultados").innerHTML = "";
+        document.querySelector("#resultados").innerHTML = "";
 
-  let data = new FormData(form);
-const resultados = document.querySelector("#resultados");
+        let data = new FormData(form);
+        const resultados = document.querySelector("#resultados");
 
-let horas = Number(data.get('horas'));
-let horasTrabajadas = Number(data.get('horasTrabajadas'));
-let fradrag = Number(data.get('fradrag'));
-let tipo = data.get("opcion");
-if (!validate(horas, horasTrabajadas, fradrag, tipo)) {
-    return;
-}
+        let horas = Number(data.get('horas'));
+        let horasTrabajadas = Number(data.get('horasTrabajadas'));
+        let fradrag = Number(data.get('fradrag'));
+        console.log("fradrag:", data.get("fradrag"));
+        let tipo = data.get("opcion");
+        console.log("opcion:", data.get("opcion"));
 
-const { final, afterAM } = calculateGeneral(horas, horasTrabajadas, fradrag, tipo);
-const feriepenge = calculateVacationPay(afterAM); 
+        if (!validate(horas, horasTrabajadas, fradrag, tipo)) {
+            return;
+        }
 
- resultados.innerHTML = `
-  <div class="resultado-card">
+        const { final, afterAM } = calculateGeneral(horas, horasTrabajadas, fradrag, tipo);
+        const feriepenge = calculateVacationPay(afterAM); 
 
-    <p class="resultado-item">
-      <span class="label">
-        Estimated monthly net income / Ingreso mensual neto estimado
-      </span>
+        resultados.innerHTML = `
+        <div class="resultado-card">
 
-      <span class="value">
-        ${final.toFixed(2)} DKK
-      </span>
-    </p>
+            <p class="resultado-item">
+            <span class="label">
+                Estimated monthly net income / Ingreso mensual neto estimado
+            </span>
 
-    <p class="resultado-item">
-      <span class="label"> Estimated holiday pay accumulation/ Acumulación estimada de pago de vacaciones
-       
-      </span>
+            <span class="value">
+                ${final.toFixed(2)} DKK
+            </span>
+            </p>
 
-      <span class="value">
-        ${feriepenge.toFixed(2)} DKK
-      </span>
-    </p>
+            <p class="resultado-item">
+            <span class="label"> Estimated holiday pay accumulation/ Acumulación estimada de pago de vacaciones
+            
+            </span>
 
-    <button id="btnBorrar">
-      CLEAR
-    </button>
+            <span class="value">
+                ${feriepenge.toFixed(2)} DKK
+            </span>
+            </p>
 
-  </div>
-`;
-form.reset();
+            <button id="btnBorrar">
+            CLEAR
+            </button>
 
-document.querySelector("#btnBorrar").addEventListener("click", limpiarCampos);
-}
+        </div>
+        `;
+        form.reset();
+
+        document.querySelector("#btnBorrar").addEventListener("click", limpiarCampos);
+        }
 
 
 function limpiarCampos() {
-document.querySelector("#resultados").innerHTML = "";
-form.reset();
+        document.querySelector("#resultados").innerHTML = "";
+        form.reset();
+        }
 
-}
+ function validate(horas, horasTrabajadas, fradrag, tipo) {
+        if (isNaN(horas) || horas <= 0) {
+        alert("Por favor, ingresa un número válido de horas por semana.");
+        return false;
 
-function validate(horas, horasTrabajadas, fradrag, tipo) {
-if (isNaN(horas) || horas <= 0) {
-  alert("Por favor, ingresa un número válido de horas por semana.");
-  return false;
+        }
+        if (isNaN(horasTrabajadas) || horasTrabajadas <= 0) {
+        alert("Por favor, ingresa un número válido de horas trabajadas.");
+        return false;
+        }
 
-}
-if (isNaN(horasTrabajadas) || horasTrabajadas <= 0) {
-  alert("Por favor, ingresa un número válido de horas trabajadas.");
-  return false;
-}
+        if (isNaN(fradrag) || fradrag < 0) {
+        alert("Por favor, ingresa un número válido para el fradrag.");
+        return false;
+        }
 
-if (isNaN(fradrag) || fradrag < 0) {
-  alert("Por favor, ingresa un número válido para el fradrag.");
-  return false;
-}
+        if (!tipo) {
+        alert("Por favor, selecciona una opcion de Taxcard.");
+        return false;
+        }
 
-if (!tipo) {
-  alert("Por favor, selecciona una opcion de Taxcard.");
-  return false;
-}
-
-return true;
+        return true;
 
 
-}
+        }
