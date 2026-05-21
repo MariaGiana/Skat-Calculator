@@ -1,27 +1,70 @@
 "use strict";
 
+let lang = "es";
+document.querySelector("#langES").addEventListener("click", () => {
 
+  lang = "es";
+  setLanguage(lang);
+
+});
+
+document.querySelector("#langEN").addEventListener("click", () => {
+
+  lang = "en";
+  setLanguage(lang);
+
+});
+
+let mode = "salary";
 //escuchar eventos de click en los botones de modo y mostrar/ocultar el formulario correspondiente
 let salaryEstimate=document.querySelector("#salaryEstimate");
 
 let requiredHours=document.querySelector("#requiredHours");
-requiredHours.addEventListener("click", calcularHours);
+
 
 let mostrarFormulario=document.querySelector(".sidebar");
 
 // Mostrar el formulario al hacer clic en "Estimación de Salario" y ocultarlo al hacer clic en "Horas Requeridas"
-salaryEstimate.addEventListener("click",  () => {
+salaryEstimate.addEventListener("click", () => {
+
   mostrarFormulario.style.display = "block";
+
+  mode = "salary";
+
+ document.querySelector("#horasTrabajadas").textContent =
+  texts[lang].horasTrabajadas;
+
+  console.log(mode);
 });
 
 requiredHours.addEventListener("click", () => {
-  mostrarFormulario.style.display = "none";
+
+  mostrarFormulario.style.display = "block";
+
+  mode = "hours";
+
+ document.querySelector("#horasTrabajadas").textContent =
+    texts[lang].desiredIncome;
+
+     
+  console.log(mode);
 })
 
 let form = document.querySelector("#formulario"); 
 form.addEventListener("submit", calculate); 
 
 
+function calculate(event) {
+  event.preventDefault();
+
+  if (mode === "salary") {
+    calculateSalary();
+  }
+
+  if (mode === "hours") {
+    calculateHours();
+  }
+}
 
 const texts = {
   es: {
@@ -29,6 +72,7 @@ const texts = {
     requiredHours: "Horas Requeridas",
     horas: "Monto por Hora",
     horasTrabajadas: "Horas Trabajadas",
+    desiredIncome: "Monto Deseado",
     seleccionar: {
   taxA: "Primaria A",
   taxB: "Secundaria B"
@@ -42,6 +86,7 @@ note: "Nota: los resultados son una estimación basada en un modelo simplificado
     requiredHours: "Required Hours",
     horas: "Hourly Rate",
     horasTrabajadas: "Hours Worked",
+    desiredIncome: "Desired Income",
     seleccionar: {
   taxA: "Primary A",
   taxB: "Secondary B"
@@ -52,9 +97,7 @@ note: "Nota: los resultados son una estimación basada en un modelo simplificado
 }
 };
 
-//escuchar eventos de click en los botones de idioma
-document.querySelector("#langES").addEventListener("click", () => setLanguage("es"));
-document.querySelector("#langEN").addEventListener("click", () => setLanguage("en"));
+
 
 //funcion para cambiar el idioma del texto en la pagina
 function setLanguage(lang) {
@@ -68,6 +111,18 @@ function setLanguage(lang) {
   document.querySelector("#note").textContent = texts[lang].note;
   document.querySelector("#salaryEstimate").textContent = texts[lang].salaryEstimate;
   document.querySelector("#requiredHours").textContent = texts[lang].requiredHours;
+
+  if (mode === "salary") {
+
+  document.querySelector("#horasTrabajadas").textContent =
+    texts[lang].horasTrabajadas;
+
+} else {
+
+  document.querySelector("#horasTrabajadas").textContent =
+    texts[lang].desiredIncome;
+
+}
 };
 
 
@@ -75,12 +130,14 @@ function setLanguage(lang) {
 
 
 
-function calcularHours() {
+function calculateHours() {
  
   console.log("Calculating required hours...");
 }
 
-function calculate(event) {
+
+
+function calculateSalary(event) {
     event.preventDefault();
 document.querySelector("#resultados").innerHTML = "";
 let data= new FormData(form);
