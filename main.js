@@ -34,6 +34,9 @@ salaryEstimate.addEventListener("click", () => {
  document.querySelector("#horasTrabajadas").textContent =
   texts[lang].horasTrabajadas;
 
+   salaryEstimate.classList.add("active");
+  requiredHours.classList.remove("active");
+
   console.log(mode);
 });
 
@@ -46,7 +49,9 @@ requiredHours.addEventListener("click", () => {
  document.querySelector("#horasTrabajadas").textContent =
     texts[lang].desiredIncome;
 
-     
+  requiredHours.classList.add("active");
+  salaryEstimate.classList.remove("active");
+
   console.log(mode);
 })
 
@@ -123,6 +128,11 @@ function setLanguage(lang) {
     texts[lang].desiredIncome;
 
 }
+document.querySelectorAll(".btnCalcular")
+    .forEach(btn => btn.classList.remove("active"));
+
+  document.querySelector(`#lang${lang.toUpperCase()}`)
+    .classList.add("active");
 };
 
 
