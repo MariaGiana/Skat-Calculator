@@ -99,9 +99,7 @@ function calculate(event) {
 //funcion para cambiar el idioma del texto en la pagina
  function setLanguage(lang) {
         document.querySelector("#horas").textContent = texts[lang].horas;
-        console .log(texts[lang].horas);
         document.querySelector("#horasTrabajadas").textContent = texts[lang].horasTrabajadas;
-        console .log(texts[lang].horasTrabajadas);
         document.querySelector("#labelTaxA").textContent = texts[lang].seleccionar.taxA;
         document.querySelector("#labelTaxB").textContent = texts[lang].seleccionar.taxB;
         document.querySelector("#modeDescription").textContent = texts[lang].modeDescription;
@@ -139,24 +137,19 @@ const ferie = 0.125;
 function calculateGeneral(horas, horasTrabajadas, fradrag, tipo){
 
         let bruto= horas * horasTrabajadas;
-        console.log("Bruto: " + bruto);
         let afterAM = bruto * (1 - am);
-        console.log("After AM: " + afterAM);
         let neto;
         let final;
             
         if(tipo === "conFradrag"){ 
          
-   
         let taxable = afterAM - fradrag;
-        console.log("Taxable: " + taxable);
     
         if (taxable < 0) {
             final = afterAM;
             return { final, afterAM };
             }else {
             neto = taxable * (1 - tax);
-            console.log("Neto: " + neto);
             final= neto + (fradrag*(1 - am));
             
     
@@ -186,8 +179,7 @@ function calculateHours(event) {
         let ingresosDeseados = Number(data.get('horasTrabajadas'));
         let fradrag = Number(data.get('fradrag'));
         let tipo = data.get("opcion");
-        console.log("fradrag:", data.get("fradrag"));
-        console.log("opcion:", data.get("opcion"));
+        
 
         if (!validate(horas, ingresosDeseados, fradrag, tipo)) return;
 
@@ -221,11 +213,9 @@ function calculateHours(event) {
             const fradragFactor = 0.28;
 
             let adjustedTarget =ingresosDeseados - fradrag * fradragFactor;
-        console.log("Adjusted Target: " + adjustedTarget);
             if (adjustedTarget < 0) return 0;
 
             let horasTrabajadas = adjustedTarget / (horas * netFactor);
-        console.log("Horas Trabajadas: " + horasTrabajadas);
             return horasTrabajadas;
             
             }
