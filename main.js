@@ -191,8 +191,8 @@ function calculateHours(event) {
             <div class="resultado-card">
 
             <p>
-                Estimated hours needed /necesitas trabajar las siguientes horas:
-                <strong>${horasTrabajadas.toFixed(2)}</strong>
+                Estimated hours needed /necesitas trabajar:
+                <span class="value"><strong>${horasTrabajadas.toFixed(2)} hs</strong></span>
             </p>
 
             <button id="btnBorrar">CLEAR</button>
