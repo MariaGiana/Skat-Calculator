@@ -41,6 +41,11 @@ Esta calculadora simplifica ese proceso, permitiendo a los usuarios realizar est
 * **Interfaz Bilingüe:** Cambia instantáneamente entre Español e Inglés con un solo clic.
 * **Diseño Limpio:** Formulario intuitivo y dinámico que resalta los resultados clave.
 
+| 🇪🇸 Versión Español | 🇺🇸 Versión Inglés |
+| :---: | :---: |
+| <img width="380" alt="Español" src="https://github.com/user-attachments/assets/521bc3c5-b1b8-4be1-a0fc-f6a307051cd7" /> | <img width="380" alt="Inglés" src="https://github.com/user-attachments/assets/43daa1e4-cf14-4cbe-a2ce-44652d5a7355" /> |
+
+
 ### 📋 Tax Model Disclaimer/Notas sobre el Modelo Fiscal  
 > ⚠️ **Note:** The results provided by this application are estimations based on a simplified tax model to give a general overview of net income. Actual figures may vary depending on the user's personal situation, specific deductions (e.g., commuting or union fees), and current SKAT fiscal regulations.  
 > ⚠️ **Nota:** Los resultados generados por esta aplicación son una estimación basada en un modelo simplificado para dar una idea general del ingreso neto. Los valores reales pueden variar según la situación personal del usuario, deducciones extraordinarias (como transporte o sindicatos) y las reglas fiscales vigentes de SKAT.  
